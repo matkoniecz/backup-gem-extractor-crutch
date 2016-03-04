@@ -125,3 +125,14 @@ def compare(compared_path, unpack_root)
 		puts returned
 	end
 end
+
+def directory_size(path)
+  size=0
+  Dir.glob(File.join(path, '**', '*')) { |file| size+=File.size(file) }
+  return size
+end
+
+def is_it_at_least_this_size_in_mb(path, mb)
+	size = directory_size(path)
+	return size > mb*1024*1024
+end
