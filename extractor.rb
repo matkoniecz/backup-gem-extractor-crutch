@@ -72,6 +72,8 @@ def uncrypt_archive(archive_storage_root, archive_name, password)
 end
 
 def extract_archive(archive_storage_root, archive_name, unpack_root)
+	debug("unpacking <#{archive_name}>", :high)
+
 	storage = get_storage_folder(archive_storage_root, archive_name)
 	Dir.chdir(storage)
 	debug("archive is stored at <#{storage}>")
