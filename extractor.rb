@@ -116,7 +116,7 @@ def process_given_archive(archive_storage_root, archive_name, unpack_root, passw
 end
 
 def compare(compared_path, unpack_root)
-	command = "diff --brief -r #{compared_path} #{unpack_root+compared_path}"
+	command = "diff --brief -r --no-dereference #{compared_path} #{unpack_root+compared_path}"
 	puts
 	puts command
 	returned = execute_command(command, [1])
