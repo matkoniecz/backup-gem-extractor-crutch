@@ -33,7 +33,7 @@ def execute_command(command, unstandard_error_free_exit_codes=[])
 	if $?.success? or unstandard_error_free_exit_codes.include?($?.exitstatus)
 		debug('all done', :low)
 	else
-		raise "<#{command}> command had problem (<#{$?}>)"
+		raise "<#{command}> command had problem (<#{$?}> with output <#{output}>)"
 	end
 	return output
 end
