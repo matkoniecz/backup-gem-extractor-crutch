@@ -27,6 +27,7 @@ def get_storage_folder(archive_storage_root, archive_name)
 	return target
 end
 
+#alternatives - see http://stackoverflow.com/questions/3159945/running-command-line-commands-within-ruby-script
 def execute_command(command, unstandard_error_free_exit_codes=[])
 	output = `#{command}`
 	if $?.success? or unstandard_error_free_exit_codes.include?($?.exitstatus)
