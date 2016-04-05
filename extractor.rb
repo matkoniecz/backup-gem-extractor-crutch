@@ -13,6 +13,9 @@ def debug(message, priority=:medium)
 	if priority ==  :low
 		return
 	end
+	if priority ==  :medium
+		return
+	end
 	puts message
 end
 
