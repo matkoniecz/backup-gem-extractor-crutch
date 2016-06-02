@@ -10,12 +10,8 @@ require 'fileutils'
 # archives may be split
 
 def debug(message, priority = :medium)
-  if priority == :low
-    return
-  end
-  if priority == :medium
-    return
-  end
+  return if priority == :low
+  return if priority == :medium
   puts message
 end
 
@@ -25,7 +21,7 @@ def get_storage_folder(archive_storage_root, archive_name)
   debug("looking for date folder in <#{target}>", :low)
   Dir.chdir(target)
   directory = Dir.glob('*').select { |f| File.directory? f }
-  raise "unexpected multiple backups at once, not supposed to happen in my workflow" unless (directory.length == 1)
+  raise "unexpected multiple backups at once, not supposed to happen in my workflow" unless directory.length == 1
   target += '/' + directory[0] + '/'
   return target
 end
@@ -43,7 +39,7 @@ end
 
 def extract_tar_file(file, target_folder = nil)
   command = "tar xf #{file}"
-  if target_folder != nil
+  unless target_folder.nil?
     command += " --preserve-permissions -C #{target_folder}"
   end
   execute_command(command)
@@ -53,7 +49,7 @@ def get_the_only_expected_file(filter = '*')
   files = Dir.glob(filter)
   puts files
   if files.length != 1
-    if files.length == 0
+    if files.empty?
       puts 'no files found'
     else
       puts "files:"
@@ -98,7 +94,7 @@ end
 
 def is_unsplitting_necessary(archive_storage_root, archive_name)
   storage = get_storage_folder(archive_storage_root, archive_name)
-  return File.exists?(storage + "#{archive_name}.tar.enc-aaa")
+  return File.exist?(storage + "#{archive_name}.tar.enc-aaa")
 end
 
 def unsplit_archive(archive_storage_root, archive_name)
