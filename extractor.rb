@@ -29,7 +29,8 @@ def get_storage_folder(archive_storage_root, archive_name)
   change_directory(target)
   directory = Dir.glob('*').select { |f| File.directory? f }
   if directory.length != 1
-    puts "unexpected multiple backups at once in #{target}, not supposed to happen in my workflow"
+    puts "unexpected multiple backups at once in #{target}, or backup not found"
+    puts "not supposed to happen in my workflow"
     puts "listing #{directory.length} directories, expected exactly 1:"
     directory.each do |file|
       puts file
