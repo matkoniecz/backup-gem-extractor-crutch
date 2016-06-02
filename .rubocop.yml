@@ -1,0 +1,11 @@
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
