@@ -9,11 +9,11 @@ require 'fileutils'
 #files are encrypted and archived with tar
 #archives may be split
 
-def debug(message, priority=:medium)
-	 if priority ==  :low
+def debug(message, priority = :medium)
+	 if priority == :low
  		 return
  	end
-	 if priority ==  :medium
+	 if priority == :medium
  		 return
  	end
 	 puts message
@@ -24,14 +24,14 @@ def get_storage_folder(archive_storage_root, archive_name)
 	 target = archive_storage_root + '/' + archive_name
 	 debug("looking for date folder in <#{target}>", :low)
 	 Dir.chdir(target)
-	 directory = Dir.glob('*').select {|f| File.directory? f}
+	 directory = Dir.glob('*').select { |f| File.directory? f }
 	 raise "unexpected multiple backups at once, not supposed to happen in my workflow" unless (directory.length == 1)
 	 target += '/' + directory[0] + '/'
 	 return target
 end
 
 #alternatives - see http://stackoverflow.com/questions/3159945/running-command-line-commands-within-ruby-script
-def execute_command(command, unstandard_error_free_exit_codes=[])
+def execute_command(command, unstandard_error_free_exit_codes = [])
 	 output = `#{command}`
 	 if $?.success? or unstandard_error_free_exit_codes.include?($?.exitstatus)
  		 debug('all done', :low)
@@ -41,7 +41,7 @@ def execute_command(command, unstandard_error_free_exit_codes=[])
 	 return output
 end
 
-def extract_tar_file(file, target_folder=nil)
+def extract_tar_file(file, target_folder = nil)
 	 command = "tar xf #{file}"
 	 if target_folder != nil
  		 command += " --preserve-permissions -C #{target_folder}"
@@ -49,7 +49,7 @@ def extract_tar_file(file, target_folder=nil)
 	 execute_command(command)
 end
 
-def get_the_only_expected_file(filter='*')
+def get_the_only_expected_file(filter = '*')
 	 files = Dir.glob(filter)
 	 puts files
 	 if files.length != 1
@@ -109,20 +109,20 @@ end
 
 def process_given_archive(archive_storage_root, archive_name, unpack_root, password)
 	 debug("processsing #{archive_name} in #{archive_storage_root} - extracting to #{unpack_root}", :high)
-	 if(is_unsplitting_necessary(archive_storage_root, archive_name))
+	 if is_unsplitting_necessary(archive_storage_root, archive_name)
  		 unsplit_archive(archive_storage_root, archive_name)
  	end
 	 uncrypt_archive(archive_storage_root, archive_name, password)
 	 extract_archive(archive_storage_root, archive_name, unpack_root)
 	 storage = get_storage_folder(archive_storage_root, archive_name)
-	 if(is_unsplitting_necessary(archive_storage_root, archive_name))
- 		 FileUtils.rm_rf(storage+archive_name+".tar.enc")
+	 if is_unsplitting_necessary(archive_storage_root, archive_name)
+ 		 FileUtils.rm_rf(storage + archive_name + ".tar.enc")
  	end
-	 FileUtils.rm_rf(storage+archive_name+".tar")
+	 FileUtils.rm_rf(storage + archive_name + ".tar")
 end
 
 def compare(compared_path, unpack_root)
-	 command = "diff --brief -r --no-dereference #{compared_path} #{unpack_root+compared_path}"
+	 command = "diff --brief -r --no-dereference #{compared_path} #{unpack_root + compared_path}"
 	 puts
 	 puts command
 	 returned = execute_command(command, [1])
@@ -134,12 +134,12 @@ def compare(compared_path, unpack_root)
 end
 
 def directory_size(path)
-  size=0
-  Dir.glob(File.join(path, '**', '*')) { |file| size+=File.size(file) }
+  size = 0
+  Dir.glob(File.join(path, '**', '*')) { |file| size += File.size(file) }
   return size
 end
 
 def is_it_at_least_this_size_in_mb(path, mb)
 	 size = directory_size(path)
-	 return size > mb*1024*1024
+	 return size > mb * 1024 * 1024
 end
