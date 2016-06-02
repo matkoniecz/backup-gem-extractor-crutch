@@ -108,6 +108,7 @@ def unsplit_archive(archive_storage_root, archive_name)
 end
 
 def process_given_archive(archive_storage_root, archive_name, unpack_root, password)
+	debug("processsing #{archive_name} in #{archive_storage_root} - extracting to #{unpack_root}", :high)
 	if(is_unsplitting_necessary(archive_storage_root, archive_name))
 		unsplit_archive(archive_storage_root, archive_name)
 	end
