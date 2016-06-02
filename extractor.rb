@@ -21,7 +21,14 @@ def get_storage_folder(archive_storage_root, archive_name)
   debug("looking for date folder in <#{target}>", :low)
   Dir.chdir(target)
   directory = Dir.glob('*').select { |f| File.directory? f }
-  raise "unexpected multiple backups at once, not supposed to happen in my workflow" unless directory.length == 1
+  if directory.length != 1
+    puts "unexpected multiple backups at once in #{target}, not supposed to happen in my workflow"
+    puts "listing #{directory.length} directories, expected exactly 1:"
+    directory.each do |file|
+      puts file
+    end
+    raise "unhandled workflow"
+  end
   target += '/' + directory[0] + '/'
   return target
 end
