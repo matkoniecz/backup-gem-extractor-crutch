@@ -15,11 +15,18 @@ def debug(message, priority = :medium)
   puts message
 end
 
+def change_directory(target)
+  Dir.chdir(target)
+  if Dir.getwd != target
+    raise "failed to change working directory to #{target}"
+  end
+end
+
 def get_storage_folder(archive_storage_root, archive_name)
   debug("joining <#{archive_storage_root}> and <#{archive_name}>", :low)
   target = archive_storage_root + '/' + archive_name
   debug("looking for date folder in <#{target}>", :low)
-  Dir.chdir(target)
+  change_directory(target)
   directory = Dir.glob('*').select { |f| File.directory? f }
   if directory.length != 1
     puts "unexpected multiple backups at once in #{target}, not supposed to happen in my workflow"
@@ -72,7 +79,7 @@ end
 def uncrypt_archive(archive_storage_root, archive_name, password)
   storage = get_storage_folder(archive_storage_root, archive_name)
   output_archive = archive_name + '.tar'
-  Dir.chdir(storage)
+  change_directory(storage)
   command = "openssl aes-256-cbc -d -in #{archive_name}.tar.enc -k #{password} -out #{output_archive}"
   execute_command(command)
 end
@@ -81,7 +88,7 @@ def extract_archive(archive_storage_root, archive_name, unpack_root)
   debug("unpacking <#{archive_name}>", :high)
 
   storage = get_storage_folder(archive_storage_root, archive_name)
-  Dir.chdir(storage)
+  change_directory(storage)
   debug("archive is stored at <#{storage}>")
 
   file = get_the_only_expected_file('*.tar')
@@ -90,12 +97,12 @@ def extract_archive(archive_storage_root, archive_name, unpack_root)
   folder_with_unpacked_archive = storage + archive_name
   debug("unpacked archive with second layer of archive is stored at <#{folder_with_unpacked_archive}>")
 
-  Dir.chdir(folder_with_unpacked_archive + '/archives/')
+  change_directory(folder_with_unpacked_archive + '/archives/')
   file = get_the_only_expected_file('*.tar.gz')
   debug("extracting #{file}")
   extract_tar_file(file, unpack_root)
 
-  Dir.chdir(storage)
+  change_directory(storage)
   FileUtils.rm_rf(folder_with_unpacked_archive)
 end
 
@@ -106,7 +113,7 @@ end
 
 def unsplit_archive(archive_storage_root, archive_name)
   storage = get_storage_folder(archive_storage_root, archive_name)
-  Dir.chdir(storage)
+  change_directory(storage)
   execute_command("cat #{archive_name}.tar.enc-* > #{archive_name}.tar.enc")
 end
 
