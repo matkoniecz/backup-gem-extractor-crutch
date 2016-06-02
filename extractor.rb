@@ -1,13 +1,13 @@
 # Encoding: utf-8
-#Copyright (C) 2016 - GPLv3 - Mateusz Konieczny
+# Copyright (C) 2016 - GPLv3 - Mateusz Konieczny
 
 require 'io/console'
 require 'fileutils'
 
-#some assumptions:
-#archive is valid
-#files are encrypted and archived with tar
-#archives may be split
+# some assumptions:
+# archive is valid
+# files are encrypted and archived with tar
+# archives may be split
 
 def debug(message, priority = :medium)
 	 if priority == :low
@@ -30,7 +30,7 @@ def get_storage_folder(archive_storage_root, archive_name)
 	 return target
 end
 
-#alternatives - see http://stackoverflow.com/questions/3159945/running-command-line-commands-within-ruby-script
+# alternatives - see http://stackoverflow.com/questions/3159945/running-command-line-commands-within-ruby-script
 def execute_command(command, unstandard_error_free_exit_codes = [])
 	 output = `#{command}`
 	 if $?.success? or unstandard_error_free_exit_codes.include?($?.exitstatus)
@@ -85,7 +85,7 @@ def extract_archive(archive_storage_root, archive_name, unpack_root)
 	 debug("extracting #{file}")
 	 extract_tar_file(file)
 	 folder_with_unpacked_archive = storage + archive_name
-	 debug("unpacked archive with second layer of archive is stored at <#{folder_with_unpacked_archive}>")	
+	 debug("unpacked archive with second layer of archive is stored at <#{folder_with_unpacked_archive}>")
 
 	 Dir.chdir(folder_with_unpacked_archive + '/archives/')
 	 file = get_the_only_expected_file('*.tar.gz')
