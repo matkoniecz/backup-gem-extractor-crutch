@@ -18,7 +18,7 @@ end
 def change_directory(target)
   Dir.chdir(target)
   if Dir.getwd != target
-    raise "failed to change working directory to #{target}"
+    raise "failed to change working directory to #{target} (it is #{Dir.getwd})"
   end
 end
 
