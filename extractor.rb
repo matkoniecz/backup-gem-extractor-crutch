@@ -17,9 +17,8 @@ end
 
 def change_directory(target)
   Dir.chdir(target)
-  if Dir.getwd != target
-    raise "failed to change working directory to #{target} (it is #{Dir.getwd})"
-  end
+  return if File.identical?(target, Dir.getwd)
+  raise "failed to change working directory to #{target} (it is #{Dir.getwd})"
 end
 
 def get_storage_folder(archive_storage_root, archive_name)
