@@ -132,13 +132,71 @@ def process_given_archive(archive_storage_root, archive_name, unpack_root, passw
 end
 
 def compare(compared_path, unpack_root)
-  puts
-  puts compare_paths(compared_path, unpack_root + compared_path)
+  text = compare_paths(compared_path, unpack_root)
+  return text
 end
 
-def compare_paths(path_a, path_b)
-  command = "diff --brief -r --no-dereference '#{path_a}' '#{path_b}'"
+class UnexpectedData < StandardError
+  def initialize(message)
+    super(message)
+  end
+end
+
+def discard_unimportant(text, unimportant_paths_array, possible_prefix=[])
+  possible_prefix << ""
+  output = ""
+  text.split("\n").each do |line|
+    line.strip!
+    unimportant = false
+    unimportant_paths_array.each do |filter|
+      possible_prefix.each do |prefix|
+        r_filter = (Regexp.escape filter).gsub('/', '\/')
+        r_prefix = (Regexp.escape prefix).gsub('/', '\/')
+        if line =~ /\AOnly in (.+): (.+)\z/
+          filepath_without_file, file = /\AOnly in (.+): (.+)\z/.match(line).captures
+          filepath_without_file += '/' if filepath_without_file[-1] != '/'
+          filepath = filepath_without_file + file
+          unimportant = true if filepath =~ /\A#{r_prefix}#{r_filter}.*\z/
+        elsif line =~ /\AFiles (.+) and (.+) differ\z/
+          filepath_a, filepath_b = /\AFiles (.+) and (.+) differ\z/.match(line).captures
+          unimportant = true if filepath_a =~ /\A#{r_prefix}#{r_filter}.*\z/
+          unimportant = true if filepath_b =~ /\A#{r_prefix}#{r_filter}.*\z/
+        elsif line =~ /\AFile (.+) is a fifo while file (.+) is a fifo\z/
+          unimportant = true
+        elsif line =~ /\AFile (.+) is a character special file while file (.+) is a character special file\z/
+          unimportant = true
+        elsif line == everything_is_fine_message.strip
+          next
+        elsif line == ""
+          next
+        else
+          raise UnexpectedData.new("unexpected line <#{line}>")
+        end
+      end
+    end
+    next if unimportant
+    output += line + "\n"
+  end
+  puts
+  if output == ""
+    return nil
+  end
+  return  "#{output}"
+end
+
+def everything_is_fine_or_unimportant_message
+  "no important differences"
+end
+
+def compare_paths(path_to_backuped, backup_location)
+  original = path_to_backuped
+  restored = backup_location+path_to_backuped
+  raise "missing folder for comparison: #{original}" unless Dir.exist?(original)
+  raise "missing folder for comparison: #{restored}" unless Dir.exist?(restored)
+  command = "diff --brief -r --no-dereference '#{original}' '#{restored}'"
+  puts
   puts command
+  puts
   returned = execute_command(command, [1])
   if returned == ""
     return everything_is_fine_message
