@@ -137,7 +137,7 @@ def compare(compared_path, unpack_root)
 end
 
 def compare_paths(path_a, path_b)
-  command = "diff --brief -r --no-dereference #{path_a} #{path_b}"
+  command = "diff --brief -r --no-dereference '#{path_a}' '#{path_b}'"
   puts command
   returned = execute_command(command, [1])
   if returned == ""
