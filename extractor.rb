@@ -132,15 +132,23 @@ def process_given_archive(archive_storage_root, archive_name, unpack_root, passw
 end
 
 def compare(compared_path, unpack_root)
-  command = "diff --brief -r --no-dereference #{compared_path} #{unpack_root + compared_path}"
   puts
+  puts compare_paths(compared_path, unpack_root + compared_path)
+end
+
+def compare_paths(path_a, path_b)
+  command = "diff --brief -r --no-dereference #{path_a} #{path_b}"
   puts command
   returned = execute_command(command, [1])
   if returned == ""
-    puts "everything is fine!"
+    return everything_is_fine_message
   else
-    puts returned
+    return returned
   end
+end
+
+def everything_is_fine_message
+  return "everything is fine!"
 end
 
 def directory_size(path)
