@@ -148,7 +148,7 @@ def compare_paths(path_a, path_b)
 end
 
 def everything_is_fine_message
-  return "everything is fine!"
+  return "everything is fine!"+"\n"
 end
 
 def directory_size(path)
