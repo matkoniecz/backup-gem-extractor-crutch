@@ -5,9 +5,10 @@ require 'io/console'
 require 'fileutils'
 
 # some assumptions:
-# archive is valid
+# this tool runs on Ubuntu
+# archive is valid archive generated with backup gem
 # files are encrypted and archived with tar
-# archives may be split
+# archives may be split or not
 
 def debug(message, priority = :medium)
   return if priority == :low
