@@ -18,4 +18,4 @@ compare('/home/mateusz/Music/', unpack_root)
 
 At this moment this script is able to process basically only the archive format that I am using.
 
-If you are interested in using this script with other configuration of backup gem - create an issue on bugtracker. It will bump rewriting this cript on my TODO list. PRs are obviously welcomed.
+If you are interested in using this script with other configuration of backup gem - create an issue on the bugtracker. PRs are obviously welcomed.
