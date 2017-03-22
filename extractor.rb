@@ -53,7 +53,7 @@ def execute_command(command, unstandard_error_free_exit_codes = [])
 end
 
 def extract_tar_file(file, target_folder = nil)
-  command = "tar xf #{file}"
+  command = "tar --extract --file=#{file}"
   unless target_folder.nil?
     command += " --preserve-permissions -C #{target_folder}"
   end
