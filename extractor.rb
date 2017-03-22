@@ -60,6 +60,12 @@ def extract_tar_file(file, target_folder = nil)
     # tar will change its current directory to dir before performing any operations
     # https://www.gnu.org/software/tar/manual/html_node/Option-Summary.html
   end
+  #base test:
+  #echo "tar: Removing leading \`/' from member names" | grep -v "tar: Removing leading \`/' from member names"
+  #shell should get:
+  #grep -v "tar: Removing leading \`/' from member names"
+  #command += ' | grep -v "tar: Removing leading \`/\' from member names"'
+  #the code above is not proper way to solve this, it will mess up errorcode (hide errors, grep will return error on lack of match)
   execute_command(command)
 end
 
