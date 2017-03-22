@@ -56,6 +56,9 @@ def extract_tar_file(file, target_folder = nil)
   command = "tar --extract --file=#{file}"
   unless target_folder.nil?
     command += " --preserve-permissions -C #{target_folder}"
+    # -C
+    # tar will change its current directory to dir before performing any operations
+    # https://www.gnu.org/software/tar/manual/html_node/Option-Summary.html
   end
   execute_command(command)
 end
