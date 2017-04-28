@@ -44,7 +44,7 @@ end
 # alternatives - see http://stackoverflow.com/questions/3159945/running-command-line-commands-within-ruby-script
 def execute_command(command, unstandard_error_free_exit_codes = [])
   output = `#{command}`
-  if $?.success? or unstandard_error_free_exit_codes.include?($?.exitstatus)
+  if $?.success? || unstandard_error_free_exit_codes.include?($?.exitstatus)
     debug('all done', :low)
   else
     raise "<#{command}> command had problem (<#{$?}> with output <#{output}>). Working directory path was <#{Dir.getwd}>"
