@@ -1,4 +1,5 @@
 # Encoding: utf-8
+
 # Copyright (C) 2016 - GPLv3 - Mateusz Konieczny
 
 require 'io/console'
@@ -60,12 +61,12 @@ def extract_tar_file(file, target_folder = nil)
     # tar will change its current directory to dir before performing any operations
     # https://www.gnu.org/software/tar/manual/html_node/Option-Summary.html
   end
-  #base test:
-  #echo "tar: Removing leading \`/' from member names" | grep -v "tar: Removing leading \`/' from member names"
-  #shell should get:
-  #grep -v "tar: Removing leading \`/' from member names"
-  #command += ' | grep -v "tar: Removing leading \`/\' from member names"'
-  #the code above is not proper way to solve this, it will mess up errorcode (hide errors, grep will return error on lack of match)
+  # base test:
+  # echo "tar: Removing leading \`/' from member names" | grep -v "tar: Removing leading \`/' from member names"
+  # shell should get:
+  # grep -v "tar: Removing leading \`/' from member names"
+  # command += ' | grep -v "tar: Removing leading \`/\' from member names"'
+  # the code above is not proper way to solve this, it will mess up errorcode (hide errors, grep will return error on lack of match)
   execute_command(command)
 end
 
@@ -152,7 +153,7 @@ class UnexpectedData < StandardError
   end
 end
 
-def discard_unimportant(text, unimportant_paths_array, possible_prefix=[])
+def discard_unimportant(text, unimportant_paths_array, possible_prefix = [])
   possible_prefix << ""
   output = ""
   text.split("\n").each do |line|
@@ -180,7 +181,7 @@ def discard_unimportant(text, unimportant_paths_array, possible_prefix=[])
         elsif line == ""
           next
         else
-          raise UnexpectedData.new("unexpected line <#{line}>")
+          raise UnexpectedData, "unexpected line <#{line}>"
         end
       end
     end
@@ -188,10 +189,8 @@ def discard_unimportant(text, unimportant_paths_array, possible_prefix=[])
     output += line + "\n"
   end
   puts
-  if output == ""
-    return nil
-  end
-  return  "#{output}"
+  return nil if output == ""
+  return output.to_s
 end
 
 def everything_is_fine_or_unimportant_message
@@ -200,7 +199,7 @@ end
 
 def compare_paths(path_to_backuped, backup_location)
   original = path_to_backuped
-  restored = backup_location+path_to_backuped
+  restored = backup_location + path_to_backuped
   raise "missing folder for comparison: #{original}" unless Dir.exist?(original)
   raise "missing folder for comparison: #{restored}" unless Dir.exist?(restored)
   command = "diff --brief -r --no-dereference '#{original}' '#{restored}'"
@@ -216,7 +215,7 @@ def compare_paths(path_to_backuped, backup_location)
 end
 
 def everything_is_fine_message
-  return "everything is fine!"+"\n"
+  return "everything is fine!" + "\n"
 end
 
 def directory_size(path)

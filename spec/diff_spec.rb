@@ -62,7 +62,7 @@ describe do
   it "should not report files marked as unimportant" do
     test_name = 'changed'
     diff = run_test_named(test_name)
-    dir = File.dirname(__FILE__)+"/#{test_name}/before/"
+    dir = File.dirname(__FILE__) + "/#{test_name}/before/"
     expect(discard_unimportant(diff, ['unimportant changed.txt'], [dir])).to eq expected_message_for_differing_file(test_name, 'changed.txt')
   end
 
@@ -85,7 +85,7 @@ describe do
   it "should not report ignored deleted file" do
     test_name = 'deleted file'
     diff = run_test_named(test_name)
-    location = File.dirname(__FILE__)+"/#{test_name}/before/graphic file.png"
+    location = File.dirname(__FILE__) + "/#{test_name}/before/graphic file.png"
     puts location
     expect(discard_unimportant(diff, [location])).to eq nil
   end
@@ -106,7 +106,7 @@ describe do
   end
 
   it "should not choke on special files" do
-    diff="File /home/mateusz/.config/bcompare/BCLOCK_0 is a fifo while file /media/mateusz/Database/backup_test_tmp_folder/home/mateusz/.config/bcompare/BCLOCK_0 is a fifo\n"
+    diff = "File /home/mateusz/.config/bcompare/BCLOCK_0 is a fifo while file /media/mateusz/Database/backup_test_tmp_folder/home/mateusz/.config/bcompare/BCLOCK_0 is a fifo\n"
     discard_unimportant(diff, ['/unexisting/path'])
     diff = "File /var/spool/postfix/dev/random is a character special file while file /media/mateusz/Database/tmp/gem_unpack/var/spool/postfix/dev/random is a character special file\n"
     discard_unimportant(diff, ['/unexisting/path'])
@@ -115,6 +115,4 @@ describe do
   it "should choke on nonsense" do
     expect { discard_unimportant("lalaland", ['/unexisting/path']) }.to raise_error UnexpectedData
   end
-end 
-
-
+end
