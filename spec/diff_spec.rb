@@ -12,7 +12,7 @@ def run_test_named(name)
   target = "#{simulated_backup_location(name)}/#{dir}/#{name}/before/"
   FileUtils.mkdir_p(target)
   FileUtils.copy_entry("#{dir}/#{name}/after/", target)
-  returned = compare_paths("#{dir}/#{name}/before/", simulated_backup_location(name))
+  returned = BackupRestore.compare_paths("#{dir}/#{name}/before/", simulated_backup_location(name))
   FileUtils.remove_dir(target)
   return returned
 end
@@ -43,11 +43,11 @@ end
 
 describe do
   it "should return happy message on unchanged" do
-    expect(run_test_named('unchanged')).to eq everything_is_fine_message
+    expect(run_test_named('unchanged')).to eq BackupRestore.everything_is_fine_message
   end
 
   it "should return happy message on unchanged and do not crash on spaces in filepaths" do
-    expect(run_test_named('empty folder with space in name')).to eq everything_is_fine_message
+    expect(run_test_named('empty folder with space in name')).to eq BackupRestore.everything_is_fine_message
   end
 
   it "should report changed files" do
@@ -56,14 +56,14 @@ describe do
   end
 
   it "unimportant filter should not crash on empty input" do
-    expect(discard_unimportant("", [])).to eq nil
+    expect(BackupRestore.discard_unimportant("", [])).to eq nil
   end
 
   it "should not report files marked as unimportant" do
     test_name = 'changed'
     diff = run_test_named(test_name)
     dir = File.dirname(__FILE__) + "/#{test_name}/before/"
-    expect(discard_unimportant(diff, ['unimportant changed.txt'], [dir])).to eq expected_message_for_differing_file(test_name, 'changed.txt')
+    expect(BackupRestore.discard_unimportant(diff, ['unimportant changed.txt'], [dir])).to eq expected_message_for_differing_file(test_name, 'changed.txt')
   end
 
   it 'should report changed file with + * and UTF-8 in filename' do
@@ -87,7 +87,7 @@ describe do
     diff = run_test_named(test_name)
     location = File.dirname(__FILE__) + "/#{test_name}/before/graphic file.png"
     puts location
-    expect(discard_unimportant(diff, [location])).to eq nil
+    expect(BackupRestore.discard_unimportant(diff, [location])).to eq nil
   end
 
   test_name = 'created file'
@@ -107,12 +107,12 @@ describe do
 
   it "should not choke on special files" do
     diff = "File /home/mateusz/.config/bcompare/BCLOCK_0 is a fifo while file /media/mateusz/Database/backup_test_tmp_folder/home/mateusz/.config/bcompare/BCLOCK_0 is a fifo\n"
-    discard_unimportant(diff, ['/unexisting/path'])
+    BackupRestore.discard_unimportant(diff, ['/unexisting/path'])
     diff = "File /var/spool/postfix/dev/random is a character special file while file /media/mateusz/Database/tmp/gem_unpack/var/spool/postfix/dev/random is a character special file\n"
-    discard_unimportant(diff, ['/unexisting/path'])
+    BackupRestore.discard_unimportant(diff, ['/unexisting/path'])
   end
 
   it "should choke on nonsense" do
-    expect { discard_unimportant("lalaland", ['/unexisting/path']) }.to raise_error UnexpectedData
+    expect { BackupRestore.discard_unimportant("lalaland", ['/unexisting/path']) }.to raise_error BackupRestore::UnexpectedData
   end
 end
