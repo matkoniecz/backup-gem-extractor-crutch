@@ -218,15 +218,4 @@ class BackupRestore
   def self.everything_is_fine_message
     return "everything is fine!" + "\n"
   end
-
-  def self.directory_size(path)
-    size = 0
-    Dir.glob(File.join(path, '**', '*')) { |file| size += File.size(file) }
-    return size
-  end
-
-  def self.is_it_at_least_this_size_in_mb(path, mb)
-    size = directory_size(path)
-    return size > mb * 1024 * 1024
-  end
 end
