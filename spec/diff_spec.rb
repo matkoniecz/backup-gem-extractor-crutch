@@ -1,4 +1,4 @@
-require_relative '../extractor'
+require_relative '../lib/backup_restore'
 require 'fileutils'
 
 def simulated_backup_location(name)
