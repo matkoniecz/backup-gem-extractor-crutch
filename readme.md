@@ -1,10 +1,17 @@
-to install run
+## purpose
+
+[Backup gem](https://github.com/backup/backup) is a decent tool to create archives for storage. Unfortunately built-in restore tool is [missing and unlikely to appear](https://github.com/backup/backup-features/issues/28). This script was created to automate extraction of my backups. It is used to
+
+ - automate restore after data loss
+ - automate restoration and comparison of files after creating backup (to check whatver backup was generated correctly)
+
+## install
 
 ```
 gem install --user-install backup_restore
 ```
 
-example of usage:
+## use
 
 ```
 require 'backup_restore'
@@ -24,3 +31,11 @@ BackupRestore.compare('/home/mateusz/Music/', unpack_root)
 At this moment this script is able to process basically only the archive format that I am using.
 
 If you are interested in using this script with other configuration of backup gem - create an issue on the bugtracker. PRs are obviously welcomed.
+
+## tests
+
+Use `rspec` to run tests.
+
+## similar tools
+
+I was unaware about tools with this functionality, that is why I created this script. At this moment I am not sure whatever anybody published similar tool.
