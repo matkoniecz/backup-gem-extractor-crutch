@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 # Copyright (C) 2016 - GPLv3 - Mateusz Konieczny
 
 require 'io/console'
