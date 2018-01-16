@@ -11,8 +11,11 @@ def run_test_named(name)
   test_location_filepath = File.dirname(__FILE__)
   target = "#{simulated_backup_location(name)}/#{test_location_filepath}/#{name}/before/"
   FileUtils.mkdir_p(target)
-  FileUtils.copy_entry("#{test_location_filepath}/#{name}/after/", target)
+  source = "#{test_location_filepath}/#{name}/after/"
+  FileUtils.mkdir_p(source) # handles empty folders - that git refuses to track
+  FileUtils.copy_entry(source, target)
   compared_path = "#{test_location_filepath}/#{name}/before/"
+  FileUtils.mkdir_p(compared_path) # handles empty folders - that git refuses to track
   unpack_root = simulated_backup_location(name)
   returned = BackupRestore.compare_paths(compared_path, unpack_root)
   FileUtils.remove_dir(target)
