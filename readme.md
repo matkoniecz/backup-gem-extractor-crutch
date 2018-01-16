@@ -3,7 +3,7 @@
 [Backup gem](https://github.com/backup/backup) is a decent tool to create archives for storage. Unfortunately built-in restore tool is [missing and unlikely to appear](https://github.com/backup/backup-features/issues/28). This script was created to automate extraction of my backups. It is used to
 
  - automate restore after data loss
- - automate restoration and comparison of files after creating backup (to check whatver backup was generated correctly)
+ - automate restoration and comparison of files after creating backup (to check whatever backup was generated correctly)
 
 ## install
 
