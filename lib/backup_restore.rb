@@ -12,6 +12,8 @@ require 'fileutils'
 # archives may be split or not
 
 class BackupRestore
+  class PreconditionFailed < StandardError
+  end
   def self.debug(message, priority = :medium)
     return if priority == :low
     return if priority == :medium
@@ -129,8 +131,16 @@ class BackupRestore
     execute_command("cat #{archive_name}.tar.enc-* > #{archive_name}.tar.enc")
   end
 
+  def self.validate_folder_parameters(archive_storage_root, unpack_root)
+    raise PreconditionFailed.new("archive_storage_root (<#{archive_storage_root}>) does not exists") if !File.exist?(archive_storage_root)
+    raise PreconditionFailed.new("unpack_root (<#{unpack_root}>) does not exists") if !File.exist?(unpack_root)
+    raise PreconditionFailed.new("archive_storage_root (<#{archive_storage_root}>) is a file, not directory") if !Dir.exist?(archive_storage_root)
+    raise PreconditionFailed.new("unpack_root (<#{unpack_root}>) is a file, not directory") if !Dir.exist?(unpack_root)
+  end
+
   def self.process_given_archive(archive_storage_root, archive_name, unpack_root, password)
     debug("processsing #{archive_name} in #{archive_storage_root} - extracting to #{unpack_root}", :high)
+    validate_folder_parameters(archive_storage_root, unpack_root)
     if is_unsplitting_necessary(archive_storage_root, archive_name)
       unsplit_archive(archive_storage_root, archive_name)
     end
