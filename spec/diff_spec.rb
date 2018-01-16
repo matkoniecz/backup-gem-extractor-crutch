@@ -2,17 +2,17 @@ require_relative '../lib/backup_restore'
 require 'fileutils'
 
 def simulated_backup_location(name)
-  dir = File.dirname(__FILE__)
-  simulated_backup_location = "#{dir}/#{name}/copy"
+  test_location_filepath = File.dirname(__FILE__)
+  simulated_backup_location = "#{test_location_filepath}/#{name}/copy"
   return simulated_backup_location
 end
 
 def run_test_named(name)
-  dir = File.dirname(__FILE__)
-  target = "#{simulated_backup_location(name)}/#{dir}/#{name}/before/"
+  test_location_filepath = File.dirname(__FILE__)
+  target = "#{simulated_backup_location(name)}/#{test_location_filepath}/#{name}/before/"
   FileUtils.mkdir_p(target)
-  FileUtils.copy_entry("#{dir}/#{name}/after/", target)
-  returned = BackupRestore.compare_paths("#{dir}/#{name}/before/", simulated_backup_location(name))
+  FileUtils.copy_entry("#{test_location_filepath}/#{name}/after/", target)
+  returned = BackupRestore.compare_paths("#{test_location_filepath}/#{name}/before/", simulated_backup_location(name))
   FileUtils.remove_dir(target)
   return returned
 end
