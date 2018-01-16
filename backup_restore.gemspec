@@ -9,3 +9,12 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/matkoniecz/backup-gem-extractor-crutch'
   s.license     = 'GPL-3.0'
 end
+
+=begin
+how to release new gem version:
+
+rm *.gem
+gem build *.gemspec
+gem install --user-install *.gem
+gem push *.gem
+=end
