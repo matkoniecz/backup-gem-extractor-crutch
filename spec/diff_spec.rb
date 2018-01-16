@@ -95,8 +95,8 @@ describe do
     expect(BackupRestore.discard_unimportant(diff, [location])).to eq nil
   end
 
-  test_name = 'created file'
-  it "should report #{test_name}" do
+  it "should report created file" do
+    test_name = 'created file'
     expect(run_test_named(test_name)).to eq expected_message_for_created_file(test_name, 'HTMLFile.html')
   end
 
