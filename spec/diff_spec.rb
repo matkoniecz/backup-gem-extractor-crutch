@@ -12,7 +12,9 @@ def run_test_named(name)
   target = "#{simulated_backup_location(name)}/#{test_location_filepath}/#{name}/before/"
   FileUtils.mkdir_p(target)
   FileUtils.copy_entry("#{test_location_filepath}/#{name}/after/", target)
-  returned = BackupRestore.compare_paths("#{test_location_filepath}/#{name}/before/", simulated_backup_location(name))
+  compared_path = "#{test_location_filepath}/#{name}/before/"
+  unpack_root = simulated_backup_location(name)
+  returned = BackupRestore.compare_paths(compared_path, unpack_root)
   FileUtils.remove_dir(target)
   return returned
 end
