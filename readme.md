@@ -38,4 +38,4 @@ Use `rspec` to run tests.
 
 ## similar tools
 
-I was unaware about tools with this functionality, that is why I created this script. At this moment I am not sure whatever anybody published similar tool.
+I was unable to find any tool like this, that is why I created this script.
