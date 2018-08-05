@@ -139,15 +139,28 @@ class BackupRestore
   def self.process_given_archive(archive_storage_root, archive_name, unpack_root, password)
     debug("processsing #{archive_name} in #{archive_storage_root} - extracting to #{unpack_root}", :high)
     validate_folder_parameters(archive_storage_root, unpack_root)
+    # archive may be in form of
+    # (1) file(s) $NAME.tar.enc-aaa, $NAME.tar.enc-aab, $NAME.tar.enc-aac ...
+    # (2) single  $NAME.tar.enc
     if is_unsplitting_necessary(archive_storage_root, archive_name)
       unsplit_archive(archive_storage_root, archive_name)
     end
+
+    # now $NAME.tar.enc exists with the entire archive
     uncrypt_archive(archive_storage_root, archive_name, password)
-    extract_archive(archive_storage_root, archive_name, unpack_root)
-    storage = get_storage_folder(archive_storage_root, archive_name)
+    # now $NAME.tar exists with the entire archive unencrypted
+
+    # now $NAME.tar.enc can be now deleted if it was created
+    # it MUST NOT be deleted if archive was not split - in that case
+    # it is the original archive file!
+    # it is deleted at this step to reduce peak memory consumption on disk
+    # for unpacking large archives
     if is_unsplitting_necessary(archive_storage_root, archive_name)
       FileUtils.rm_rf(storage + archive_name + ".tar.enc")
     end
+
+    extract_archive(archive_storage_root, archive_name, unpack_root)
+    storage = get_storage_folder(archive_storage_root, archive_name)
     FileUtils.rm_rf(storage + archive_name + ".tar")
   end
 
