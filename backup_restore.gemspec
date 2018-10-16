@@ -8,6 +8,8 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob('lib/*.rb')
   s.homepage    = 'https://github.com/matkoniecz/backup-gem-extractor-crutch'
   s.license     = 'GPL-3.0'
+
+  s.add_development_dependency 'matkoniecz-ruby-style'
 end
 
 =begin
