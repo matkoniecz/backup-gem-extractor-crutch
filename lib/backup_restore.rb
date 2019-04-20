@@ -57,7 +57,7 @@ class BackupRestore
   def self.extract_tar_file(file, target_folder = nil)
     command = "tar --extract --file=#{file}"
     unless target_folder.nil?
-      command += " --preserve-permissions -C #{target_folder}"
+      command += " --preserve-permissions -C '#{target_folder}'"
       # -C
       # tar will change its current directory to dir before performing any operations
       # https://www.gnu.org/software/tar/manual/html_node/Option-Summary.html
@@ -92,7 +92,7 @@ class BackupRestore
     storage = get_storage_folder(archive_storage_root, archive_name)
     output_archive = archive_name + '.tar'
     change_directory(storage)
-    command = "openssl aes-256-cbc -d -in #{archive_name}.tar.enc -k #{password} -out #{output_archive}"
+    command = "openssl aes-256-cbc -d -in '#{archive_name}.tar.enc' -k '#{password}' -out '#{output_archive}'"
     execute_command(command)
   end
 
@@ -126,7 +126,8 @@ class BackupRestore
   def self.unsplit_archive(archive_storage_root, archive_name)
     storage = get_storage_folder(archive_storage_root, archive_name)
     change_directory(storage)
-    execute_command("cat #{archive_name}.tar.enc-* > #{archive_name}.tar.enc")
+    raise "archive name was assumed to not have spaces but it is #{archive_name}" if archive_name.include?(" ")
+    execute_command("cat #{archive_name}.tar.enc-* > '#{archive_name}.tar.enc'")
   end
 
   def self.validate_folder_parameters(archive_storage_root, unpack_root)
