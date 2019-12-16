@@ -21,19 +21,19 @@ def nonexisting_folder_b
 end
 
 describe do
-  it "should warn about unpacking to nonexisting folder" do
+  it "warns about unpacking to nonexisting folder" do
     expect { BackupRestore.validate_folder_parameters(existing_folder_b, nonexisting_folder_b) }.to raise_exception BackupRestore::PreconditionFailed
   end
-  it "should warn about unpacking from nonexisting archive root" do
+  it "warns about unpacking from nonexisting archive root" do
     expect { BackupRestore.validate_folder_parameters(nonexisting_folder_a, existing_folder_b) }.to raise_exception BackupRestore::PreconditionFailed
   end
-  it "should warn about unpacking to file, rather than folder" do
+  it "warns about unpacking to file, rather than folder" do
     expect { BackupRestore.validate_folder_parameters(existing_folder_b, existing_file) }.to raise_exception BackupRestore::PreconditionFailed
   end
-  it "should warn about unpacking from file, rather than folder" do
+  it "warns about unpacking from file, rather than folder" do
     expect { BackupRestore.validate_folder_parameters(existing_file, existing_folder_b) }.to raise_exception BackupRestore::PreconditionFailed
   end
-  it "should not warn on valid parameters" do
+  it "does not warn on valid parameters" do
     expect { BackupRestore.validate_folder_parameters(existing_folder_a, existing_folder_b) }.to_not raise_error
   end
 end
