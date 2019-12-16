@@ -34,6 +34,6 @@ describe do
     expect { BackupRestore.validate_folder_parameters(existing_file, existing_folder_b) }.to raise_exception BackupRestore::PreconditionFailed
   end
   it "does not warn on valid parameters" do
-    expect { BackupRestore.validate_folder_parameters(existing_folder_a, existing_folder_b) }.to_not raise_error
+    expect { BackupRestore.validate_folder_parameters(existing_folder_a, existing_folder_b) }.not_to raise_error
   end
 end

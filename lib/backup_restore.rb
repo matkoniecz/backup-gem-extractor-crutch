@@ -80,7 +80,7 @@ class BackupRestore
       else
         puts "files:"
       end
-      for file in files
+      files.each do |file|
         puts file
       end
       raise "expected exactly one file, not handled!"
@@ -126,7 +126,9 @@ class BackupRestore
   def self.unsplit_archive(archive_storage_root, archive_name)
     storage = get_storage_folder(archive_storage_root, archive_name)
     change_directory(storage)
-    raise "archive name was assumed to not have spaces but it is #{archive_name}" if archive_name.include?(" ")
+    if archive_name.include?(" ")
+      raise "archive name was assumed to not have spaces but it is #{archive_name}"
+    end
     execute_command("cat #{archive_name}.tar.enc-* > '#{archive_name}.tar.enc'")
   end
 
