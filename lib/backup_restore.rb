@@ -48,10 +48,9 @@ class BackupRestore
     output = `#{command}`
     if $?.success? || unstandard_error_free_exit_codes.include?($?.exitstatus)
       debug('all done', :low)
-    else
-      raise "<#{command}> command had problem (<#{$?}> with output <#{output}>). Working directory path was <#{Dir.getwd}>"
+      return output
     end
-    return output
+    raise "<#{command}> command had problem (<#{$?}> with output <#{output}>). Working directory path was <#{Dir.getwd}>"
   end
 
   def self.extract_tar_file(file, target_folder = nil)

@@ -1,3 +1,10 @@
 inherit_gem:
   matkoniecz-ruby-style:
     - standard_rubocop_config.yml
+
+Metrics/LineLength:
+  Max: 100
+  Exclude:
+    - spec/diff_spec.rb
+    - spec/validate_parameters_spec.rb
+    - backup_restore.gemspec
