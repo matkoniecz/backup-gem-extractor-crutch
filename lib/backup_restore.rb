@@ -133,10 +133,18 @@ class BackupRestore
   end
 
   def self.validate_folder_parameters(archive_storage_root, unpack_root)
-    raise PreconditionFailed.new("archive_storage_root (<#{archive_storage_root}>) does not exists") if !File.exist?(archive_storage_root)
-    raise PreconditionFailed.new("unpack_root (<#{unpack_root}>) does not exists") if !File.exist?(unpack_root)
-    raise PreconditionFailed.new("archive_storage_root (<#{archive_storage_root}>) is a file, not directory") if !Dir.exist?(archive_storage_root)
-    raise PreconditionFailed.new("unpack_root (<#{unpack_root}>) is a file, not directory") if !Dir.exist?(unpack_root)
+    unless File.exist?(archive_storage_root)
+      raise PreconditionFailed.new("archive_storage_root (<#{archive_storage_root}>) does not exists")
+    end
+    unless File.exist?(unpack_root)
+      raise PreconditionFailed.new("unpack_root (<#{unpack_root}>) does not exists")
+    end
+    unless Dir.exist?(archive_storage_root)
+      raise PreconditionFailed.new("archive_storage_root (<#{archive_storage_root}>) is a file, not directory")
+    end
+    unless Dir.exist?(unpack_root)
+      raise PreconditionFailed.new("unpack_root (<#{unpack_root}>) is a file, not directory")
+    end
   end
 
   def self.process_given_archive(archive_storage_root, archive_name, unpack_root, password)
