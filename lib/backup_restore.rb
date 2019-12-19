@@ -166,6 +166,7 @@ class BackupRestore
     # it is deleted at this step to reduce peak memory consumption on disk
     # for unpacking large archives
     if is_unsplitting_necessary(archive_storage_root, archive_name)
+      storage = get_storage_folder(archive_storage_root, archive_name)
       FileUtils.rm_rf(storage + archive_name + ".tar.enc")
     end
 
