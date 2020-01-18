@@ -91,7 +91,7 @@ class BackupRestore
     storage = get_storage_folder(archive_storage_root, archive_name)
     output_archive = archive_name + '.tar'
     change_directory(storage)
-    command = "openssl aes-256-cbc -md md5 -d -in '#{archive_name}.tar.enc' -k '#{password}' -out '#{output_archive}'"
+    command = "openssl aes-256-cbc -d -in '#{archive_name}.tar.enc' -k '#{password}' -out '#{output_archive}'"
     execute_command(command)
   end
 
