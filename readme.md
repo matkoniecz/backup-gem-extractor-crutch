@@ -1,3 +1,7 @@
+Note: currenttly it assumes that it was encrypted with OpenSSL 1.1+
+
+Revert 3424c70 if that is not true and encrypted with an earlier OpenSSL.
+
 ## purpose
 
 [Backup gem](https://github.com/backup/backup) is a decent tool to create archives for storage. Unfortunately built-in restore tool is [missing and unlikely to appear](https://github.com/backup/backup-features/issues/28). This script was created to automate extraction of my backups. It is used to
