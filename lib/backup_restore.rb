@@ -205,6 +205,10 @@ class BackupRestore
             filepath_a, filepath_b = /\AFiles (.+) and (.+) differ\z/.match(line).captures
             unimportant = true if filepath_a =~ /\A#{r_prefix}#{r_filter}.*\z/
             unimportant = true if filepath_b =~ /\A#{r_prefix}#{r_filter}.*\z/
+          elsif line =~ /\ASymbolic links (.+) and (.+) differ\z/
+            filepath_a, filepath_b = /\ASymbolic links (.+) and (.+) differ\z/.match(line).captures
+            unimportant = true if filepath_a =~ /\A#{r_prefix}#{r_filter}.*\z/
+            unimportant = true if filepath_b =~ /\A#{r_prefix}#{r_filter}.*\z/
           elsif line =~ /\AFile (.+) is a fifo while file (.+) is a fifo\z/
             unimportant = true
           elsif line =~ /\AFile (.+) is a character special file while file (.+) is a character special file\z/
