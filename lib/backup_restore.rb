@@ -213,6 +213,8 @@ class BackupRestore
             unimportant = true
           elsif line =~ /\AFile (.+) is a character special file while file (.+) is a character special file\z/
             unimportant = true
+          elsif line =~ /\AFile (.+) is a block special file while file (.+) is a block special file\z/
+            unimportant = true
           elsif line == everything_is_fine_message.strip
             next
           elsif line == ""
