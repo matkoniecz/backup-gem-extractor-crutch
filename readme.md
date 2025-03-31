@@ -1,4 +1,4 @@
-Note: currenttly it assumes that it was encrypted with OpenSSL 1.1+
+Note: currently it assumes that it was encrypted with OpenSSL 1.1+
 
 Revert 3424c70 if that is not true and encrypted with an earlier OpenSSL.
 
