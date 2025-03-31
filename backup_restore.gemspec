@@ -10,6 +10,8 @@ Gem::Specification.new do |s|
   s.license     = 'GPL-3.0'
 
   s.add_development_dependency 'matkoniecz-ruby-style'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'rspec'
 end
 
 =begin
