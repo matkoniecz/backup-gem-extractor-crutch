@@ -120,4 +120,10 @@ describe do
   it "chokes on not existing paths" do
     expect { BackupRestore.discard_unimportant("lalaland", ['/unexisting/path']) }.to raise_error BackupRestore::UnexpectedData
   end
+
+  it "handles differing symbolic links" do
+    diff = "Symbolic links /home/mateusz/.mozilla/firefox/ou9pxd9u.default-1486757919038-1579806341656/lock and /media/mateusz/Database/tmp/gem_unpack/home/mateusz/.mozilla/firefox/ou9pxd9u.default-1486757919038-1579806341656/lock differ"
+    expect(BackupRestore.discard_unimportant(diff, [])).to eq diff+"\n"
+    expect(BackupRestore.discard_unimportant(diff, ["/home/mateusz/.mozilla/firefox"])).to eq nil
+  end
 end
