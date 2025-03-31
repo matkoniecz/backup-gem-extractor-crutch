@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'backup_restore'
-  s.version     = '0.0.5'
+  s.version     = '0.0.6'
   s.summary     = "Script for unpacking backups produced by the backup gem."
   s.description = "Script for unpacking backups produced by the backup gem. See https://github.com/backup/backup-features/issues/28 for discussion about this feature in backup gem itself. "
   s.authors     = ["Mateusz Konieczny"]
